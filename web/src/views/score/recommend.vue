@@ -1,18 +1,18 @@
 <template>
-  <base-box type="primary" title="曲谱推荐" :headerBorder="false">
-    <template v-slot:title-addon> </template>
-    <div class="recommend-list" v-if="this.result">
+  <base-box :headerBorder="false" title="曲谱推荐" type="primary">
+    <template v-slot:title-addon></template>
+    <div v-if="this.result" class="recommend-list">
       <p class="cf-info">基于用户的协同过滤算法推荐结果：</p>
       <div class="user-cf">
         <a
+          v-for="score in userCFScores"
+          :key="score.id"
           class="score-item"
           @click="
             $router.push({ name: 'score-detail', params: { id: score.id } })
           "
-          v-for="score in userCFScores"
-          :key="score.id"
         >
-          <img :src="score.poster" :alt="score.name" />
+          <img :alt="score.name" :src="score.poster"/>
           <p>
             <strong class="name">{{ score.name }} </strong>
             <strong class="keys">{{ score.keys }} </strong>
@@ -25,14 +25,14 @@
       <p class="cf-info separator">基于项目的协同过滤算法推荐结果：</p>
       <div class="item-cf">
         <a
+          v-for="score in itemCFScores"
+          :key="score.id"
           class="score-item"
           @click="
             $router.push({ name: 'score-detail', params: { id: score.id } })
           "
-          v-for="score in itemCFScores"
-          :key="score.id"
         >
-          <img :src="score.poster" :alt="score.name" />
+          <img :alt="score.name" :src="score.poster"/>
           <p>
             <strong class="name">{{ score.name }} </strong>
             <strong class="keys">{{ score.keys }} </strong>
@@ -47,52 +47,55 @@
 </template>
 
 <script>
-import ScoreService from "services/ScoreService";
-import store from "../../store";
+import ScoreService from 'services/ScoreService'
+import store from '../../store'
+
 export default {
-  data() {
+  data () {
     return {
       result: true,
       userCFScores: [],
       itemCFScores: []
-    };
+    }
   },
-  async created() {
+  async created () {
     try {
       // store.state.user
-      const response = await ScoreService.recommend(store.state.user.id);
-      this.userCFScores = response.data.UserCF.scores;
-      this.itemCFScores = response.data.ItemCF.scores;
+      const response = await ScoreService.recommend(store.state.user.id)
+      this.userCFScores = response.data.UserCF.scores
+      this.itemCFScores = response.data.ItemCF.scores
       // 添加评分信息
-      let ratingInfoUserCF = response.data.UserCF.recommendStarArr;
-      let ratingInfoItemCF = response.data.ItemCF.recommendStarArr;
+      let ratingInfoUserCF = response.data.UserCF.recommendStarArr
+      let ratingInfoItemCF = response.data.ItemCF.recommendStarArr
       for (let i = 0; i < this.userCFScores.length; i++) {
         for (let j = 0; j < ratingInfoUserCF.length; j++) {
           if (this.userCFScores[i].id === ratingInfoUserCF[j].id) {
-            this.userCFScores[i].recommendStar = ratingInfoUserCF[j].num;
+            this.userCFScores[i].recommendStar = ratingInfoUserCF[j].num
           }
           if (this.itemCFScores[i].id === ratingInfoItemCF[j].id) {
-            this.itemCFScores[i].recommendStar = ratingInfoItemCF[j].num;
+            this.itemCFScores[i].recommendStar = ratingInfoItemCF[j].num
           }
         }
       }
     } catch (error) {
-      this.$message.error(`[${error.response.status}]，数据查询异常请稍后再试`);
+      this.$message.error(`[${error.response.status}]，数据查询异常请稍后再试`)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
 .recommend-list {
-  .separator{
+  .separator {
     padding-top: 25px;
   }
+
   .cf-info {
     font-size: 30px;
     color: #409eff;
     clear: both;
   }
+
   // .user-cf{
   //   display: flex;
   //   justify-content: space-between;
@@ -119,14 +122,18 @@ export default {
       width: 230px;
       border-radius: 3px;
     }
+
     p {
       text-align: center;
+
       .name {
         font-size: 13px;
       }
+
       .keys {
         color: #e09015;
       }
+
       .recommendStar {
         color: #67c23a;
       }

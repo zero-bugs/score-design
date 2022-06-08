@@ -1,5 +1,5 @@
 <template>
-  <base-box type="primary" title="曲谱列表">
+  <base-box title="曲谱列表" type="primary">
     <template v-slot:title-addon>
       <div class="filter">
         <label @click="orderBy('views', $event)">热门</label>
@@ -8,10 +8,10 @@
         <label @click="filterByKeys('G')">G调</label>
       </div>
       <div
+        v-if="$store.state.isUserLogin"
         class="text-success"
         style="margin-left: auto; cursor: pointer"
         @click="$router.push({ name: 'score-create' })"
-        v-if="$store.state.isUserLogin"
       >
         <i class="el-icon-plus"></i> 新增曲谱
       </div>
@@ -27,15 +27,15 @@
         <strong class="keys">{{ score.keys }}</strong></p>
       </a> -->
       <a
+        v-for="score in scores"
+        :key="score.id"
         class="score-item"
         @click="
           $router.push({ name: 'score-detail', params: { id: score.id } })
         "
-        v-for="score in scores"
-        :key="score.id"
       >
         <div v-lazy-container="{ selector: 'img' }">
-          <img :data-src="score.poster" :alt="score.name" />
+          <img :alt="score.name" :data-src="score.poster"/>
           <!-- <img :src="score.poster" :alt="score.name" /> -->
         </div>
         <p>
@@ -49,6 +49,7 @@
 
 <script>
 import ScoreService from "services/ScoreService";
+
 export default {
   data() {
     return {
@@ -126,16 +127,19 @@ export default {
 <style lang="scss" scoped>
 .filter {
   margin-left: 10px;
+
   label {
     margin-right: 10px;
     color: #9b9b9b;
     font-size: 13px;
     cursor: pointer;
+
     &.active {
       color: #000000;
     }
   }
 }
+
 .score-list {
   .score-item {
     display: block;
@@ -155,18 +159,22 @@ export default {
       width: 230px;
       border-radius: 3px;
     }
+
     p {
       text-align: center;
+
       .name {
         font-size: 13px;
       }
+
       .keys {
         color: #e09015;
       }
     }
   }
 }
-img[lazy=loading] { 
+
+img[lazy=loading] {
   background-color: #20293a;
 }
 </style>

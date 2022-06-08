@@ -2,25 +2,27 @@
   <div class="register-container">
     <el-form
       ref="registerForm"
-      label-width="150px"
-      class="register-form"
       :model="registerForm"
       :rules="registerRules"
+      class="register-form"
+      label-width="150px"
     >
-      <div class="register-error">{{ this. error }}</div>
-      <el-form-item prop="email" label="邮箱">
+      <div class="register-error">{{ this.error }}</div>
+      <el-form-item label="邮箱" prop="email">
         <el-input v-model="registerForm.email"></el-input>
       </el-form-item>
-      <el-form-item prop="password" label="密码">
+      <el-form-item label="密码" prop="password">
         <el-input v-model="registerForm.password" type="password"></el-input>
       </el-form-item>
-      <el-form-item prop="comparePassword" label="确认密码">
+      <el-form-item label="确认密码" prop="comparePassword">
         <el-input v-model="registerForm.comparePassword" type="password"></el-input>
       </el-form-item>
       <div class="register-button">
-        <el-button type="primary" native-type="submit" :loading="loading" @click.prevent="register">注册</el-button>
+        <el-button :loading="loading" native-type="submit" type="primary" @click.prevent="register">注册</el-button>
       </div>
-      <div class="register-info">如果已注册账号请点击<router-link :to="{name: 'login'}">登录</router-link></div>
+      <div class="register-info">如果已注册账号请点击
+        <router-link :to="{name: 'login'}">登录</router-link>
+      </div>
     </el-form>
   </div>
 </template>
@@ -98,35 +100,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .register-container {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    background: #2d3a4b;
-    .register-form {
-      position: relative;
-      width: 430px;
-      margin: 120px auto 0;
-      background: #fff;
-      padding: 20px 0;
-      padding-right: 30px;
-      border-radius: 15px;
-      .register-button{
-        display: flex;
-        justify-content: center;
-      }
-      .register-info {
-        text-align: right;
-        font-size: 0.9rem;
-        margin-top: 10px;
-        color: #909399;
-      }
-      .register-error {
-        color: #F56C6C;
-        text-align: center;
-        padding: 0 0 5px 5px;
-      }
+.register-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: #2d3a4b;
+
+  .register-form {
+    position: relative;
+    width: 430px;
+    margin: 120px auto 0;
+    background: #fff;
+    padding: 20px 0;
+    padding-right: 30px;
+    border-radius: 15px;
+
+    .register-button {
+      display: flex;
+      justify-content: center;
+    }
+
+    .register-info {
+      text-align: right;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      color: #909399;
+    }
+
+    .register-error {
+      color: #f56c6c;
+      text-align: center;
+      padding: 0 0 5px 5px;
     }
   }
+}
 </style>

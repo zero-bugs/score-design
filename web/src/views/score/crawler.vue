@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-box type="primary" title="数据爬取">
+    <base-box title="数据爬取" type="primary">
       <el-form
         ref="crawler-form"
         :model="form"
@@ -11,8 +11,8 @@
           <el-col :span="12">
             <el-form-item label="爬取网站">
               <el-input
-                placeholder="http://www.jitaba.cn"
                 :disabled="true"
+                placeholder="http://www.jitaba.cn"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -27,21 +27,23 @@
           <el-col :span="24" style="text-align: center">
             <el-button
               :loading="loading"
-              type="primary"
               native-type="submit"
+              type="primary"
               @click.prevent="submit('crawler-form')"
-              >开始爬取</el-button
+            >开始爬取
+            </el-button
             >
             <el-button
+              :disabled="chartLoading"
               type="primary"
               @click="showChart()"
-              :disabled="chartLoading"
-              >数据分析</el-button
+            >数据分析
+            </el-button
             >
           </el-col>
         </el-row>
       </el-form>
-      <div class="crawler-page" v-show="!chartLoading">
+      <div v-show="!chartLoading" class="crawler-page">
         <h2 class="text-success">数据分析</h2>
         <div class="crawler-text">
           <p><span class="text-info">爬虫总耗时：</span><b ref="totalTime">0</b> ms</p>
@@ -55,22 +57,22 @@
 </template>
 
 <script>
-import ScoreService from "services/ScoreService";
-import * as echarts from "echarts";
+import ScoreService from 'services/ScoreService'
+import * as echarts from 'echarts'
 
 export default {
-  data() {
+  data () {
     return {
       loading: false,
       form: {
-        pageNumber: "1"
+        pageNumber: '1'
         // crawlerUrl: 'http://www.jitaba.cn'
       },
       rules: {
         pageNumber: {
           required: true,
-          message: "请输入爬取曲谱网站页数",
-          trigger: "blur"
+          message: '请输入爬取曲谱网站页数',
+          trigger: 'blur'
         }
         // crawlerUrl
       },
@@ -79,49 +81,49 @@ export default {
 
       option: {
         tooltip: {
-          trigger: "axis",
-          position: function(pt) {
-            return [pt[0], "10%"];
+          trigger: 'axis',
+          position: function (pt) {
+            return [pt[0], '10%']
           }
         },
         title: {
-          left: "center",
-          text: "爬虫数据分析"
+          left: 'center',
+          text: '爬虫数据分析'
         },
         toolbox: {
           feature: {
             dataZoom: {
-              yAxisIndex: "none"
+              yAxisIndex: 'none'
             },
             restore: {},
             saveAsImage: {}
           }
         },
         xAxis: {
-          type: "category",
+          type: 'category',
           name: '数量',
           boundaryGap: false,
           // data: date
           data: [],
-            axisLabel:{
-              fontSize: 13,
-                  interval: 1,
-                  width: 50,
-                  overflow: "truncate",
-                   ellipsis: '...'
+          axisLabel: {
+            fontSize: 13,
+            interval: 1,
+            width: 50,
+            overflow: 'truncate',
+            ellipsis: '...'
 
-                }
+          }
         },
         yAxis: {
-          type: "value",
-          name: "耗时/ms",
+          type: 'value',
+          name: '耗时/ms',
           max: 1600,
           minInterval: 100
           // boundaryGap: [0, "100%"]
         },
         dataZoom: [
           {
-            type: "inside",
+            type: 'inside',
             start: 0,
             end: 100
           },
@@ -132,22 +134,22 @@ export default {
         ],
         series: [
           {
-            name: "耗时",
-            type: "line",
-            symbol: "none",
-            sampling: "lttb",
+            name: '耗时',
+            type: 'line',
+            symbol: 'none',
+            sampling: 'lttb',
             itemStyle: {
-              color: "rgb(255, 70, 131)"
+              color: 'rgb(255, 70, 131)'
             },
             areaStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
                   offset: 0,
-                  color: "#F56C6C"
+                  color: '#F56C6C'
                 },
                 {
                   offset: 1,
-                  color: "#409EFF"
+                  color: '#409EFF'
                 }
               ])
             },
@@ -156,75 +158,72 @@ export default {
           }
         ]
       }
-    };
+    }
   },
 
   methods: {
-    submit(formName) {
+    submit (formName) {
       this.$refs[formName].validate(async valid => {
-        this.loading = true;
+        this.loading = true
         if (valid) {
           try {
-            this.AanlysisData = await ScoreService.crawlerBegin(this.form);
-            console.log(this.AanlysisData);
+            this.AanlysisData = await ScoreService.crawlerBegin(this.form)
+            console.log(this.AanlysisData)
             this.$message({
-              message: "开始爬虫！爬取页面为" + this.form.pageNumber,
-              type: "success",
+              message: '开始爬虫！爬取页面为' + this.form.pageNumber,
+              type: 'success',
               duration: 1000,
               onClose: () => {
-                this.chartLoading = false;
+                this.chartLoading = false
               }
-            });
+            })
           } catch (error) {
             if (
-              typeof error.response.data !== "undefined" &&
+              typeof error.response.data !== 'undefined' &&
               error.response.data.error
             ) {
-              this.$message.error(error.response.data.error);
+              this.$message.error(error.response.data.error)
             } else {
               this.$message.error(
                 `[${error.response.status}]，数据处理异常请稍后再试`
-              );
+              )
             }
           } finally {
-            this.loading = false;
-            this.chartLoading = false;
+            this.loading = false
+            this.chartLoading = false
           }
         } else {
-          this.loading = false;
-          return false;
+          this.loading = false
+          return false
         }
-      });
+      })
     },
 
-    async showChart() {
-      let chartDom = document.getElementById("crawler-main");
-      let myChart = echarts.init(chartDom);
+    async showChart () {
+      let chartDom = document.getElementById('crawler-main')
+      let myChart = echarts.init(chartDom)
 
       this.$refs.totalTime.innerHTML = this.AanlysisData.data.time
       this.$refs.totalQuantity.innerHTML = this.AanlysisData.data.scoreArr.length
       this.$refs.averageTime.innerHTML = this.AanlysisData.data.time / this.AanlysisData.data.scoreArr.length
       await this.AanlysisData.data.scoreArr.forEach(async (score, index) => {
-        await this.option.xAxis.data.push(`${(index + 1)} ${score.title}`);
-        await this.option.series[0].data.push(Number(score.crawlerTime));
-      });
-      
+        await this.option.xAxis.data.push(`${(index + 1)} ${score.title}`)
+        await this.option.series[0].data.push(Number(score.crawlerTime))
+      })
 
-      
       // 设置y轴最大值为 时间最大值的1.5倍
       this.option.yAxis.max =
         this.option.yAxis.minInterval *
         Math.ceil(
           (1.5 * Math.max(...this.option.series[0].data)) /
-            this.option.yAxis.minInterval
-        );
+          this.option.yAxis.minInterval
+        )
 
-      this.option && myChart.setOption(this.option);
-
+      this.option && myChart.setOption(this.option)
     }
 
   }
-};
+}
 </script>
 
 <style>
@@ -232,7 +231,8 @@ export default {
   margin-top: 10px;
   padding-bottom: 30px;
 }
-.crawler-text{
+
+.crawler-text {
   display: flex;
   align-items: center;
   justify-content: space-around;

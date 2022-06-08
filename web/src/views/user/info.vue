@@ -1,5 +1,5 @@
 <template>
-  <base-box type="primary" title="用户信息">
+  <base-box title="用户信息" type="primary">
     <div class="user-info">
       <ul class="user-meta">
         <li><label class="text-primary">用户id：</label> {{ user.id }}</li>
@@ -9,15 +9,15 @@
     </div>
     <div class="rating-list">
       <a
+        v-for="res in scores"
+        :key="res.score.id"
         class="score-item"
         @click="
           $router.push({ name: 'score-detail', params: { id: res.score.id } })
         "
-        v-for="res in scores"
-        :key="res.score.id"
       >
         <div v-lazy-container="{ selector: 'img' }">
-          <img :data-src="res.score.poster" :alt="res.score.name" />
+          <img :alt="res.score.name" :data-src="res.score.poster"/>
           <!-- <img :src="score.poster" :alt="score.name" /> -->
         </div>
         <p>
@@ -40,38 +40,42 @@
 </template>
 
 <script>
-import UserService from "services/UserService";
-import store from "../../store";
+import UserService from 'services/UserService'
+import store from '../../store'
+
 export default {
-  data() {
+  data () {
     return {
-      user:{},
-      scores:[]
-    };
+      user: {},
+      scores: []
+    }
   },
-  async created() {
+  async created () {
     try {
-        const response = await UserService.getInfo(store.state.user.id)
-        this.user = response.data.user
-        this.scores = response.data.scoreList
-        // console.log(response)
+      const response = await UserService.getInfo(store.state.user.id)
+      this.user = response.data.user
+      this.scores = response.data.scoreList
+      // console.log(response)
     } catch (error) {
-      this.$message.error(`[${error.response.status}]，数据查询异常请稍后再试`);
+      this.$message.error(`[${error.response.status}]，数据查询异常请稍后再试`)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-.user-info{
+.user-info {
   font-size: 20px;
-  .user-meta{
+
+  .user-meta {
     list-style: none;
-    li{
+
+    li {
       margin-top: 20px;
     }
   }
 }
+
 .rating-list {
   .score-item {
     display: block;
@@ -91,18 +95,22 @@ export default {
       width: 230px;
       border-radius: 3px;
     }
+
     p {
       text-align: center;
+
       .name {
         font-size: 13px;
       }
+
       .keys {
         color: #e09015;
       }
     }
   }
 }
-img[lazy=loading] { 
+
+img[lazy=loading] {
   background-color: #20293a;
 }
 </style>

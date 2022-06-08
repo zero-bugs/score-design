@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header height="50px" class="bg-primary" style=" position: sticky; top: 0; z-index: 999;">
+    <el-header class="bg-primary" height="50px" style=" position: sticky; top: 0; z-index: 999;">
       <div class="header">
         <h1 @click="$router.push({ name: 'score-list' })">吉他曲谱爬取搜索与推荐系统</h1>
         <!-- @click="$router.push({ name: 'score-list' })" -->
@@ -9,7 +9,7 @@
             <span @click="$router.push({name: 'login'})">登录</span>&nbsp;|
             <span @click="$router.push({name: 'register'})">注册</span>
           </template>
-          <el-dropdown @command="handleCommand" v-else>
+          <el-dropdown v-else @command="handleCommand">
             <span class="el-dropdown-link text-white"><i class="el-icon-menu" style="margin-right: 3px"></i>更多功能</span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="logout">退出</el-dropdown-item>
@@ -58,19 +58,23 @@ export default {
   display: flex;
   color: white;
   align-items: center;
-  justify-content:space-between;
+  justify-content: space-between;
+
   h1 {
     font-size: 1.3rem;
     cursor: pointer;
   }
-  .el-dropdown-link{
+
+  .el-dropdown-link {
     font-size: 1.2rem;
     margin-right: 30px;
   }
+
   span {
     cursor: pointer;
   }
 }
+
 .container {
   width: 1020px;
   margin: 0 auto;

@@ -2,22 +2,24 @@
   <div class="login-container">
     <el-form
       ref="loginForm"
-      label-width="150px"
-      class="login-form"
       :model="loginForm"
       :rules="loginRules"
+      class="login-form"
+      label-width="150px"
     >
-      <div class="login-error">{{ this. error }}</div>
-      <el-form-item prop="email" label="邮箱">
+      <div class="login-error">{{ this.error }}</div>
+      <el-form-item label="邮箱" prop="email">
         <el-input v-model="loginForm.email"></el-input>
       </el-form-item>
-      <el-form-item prop="password" label="密码">
+      <el-form-item label="密码" prop="password">
         <el-input v-model="loginForm.password" type="password"></el-input>
       </el-form-item>
       <div class="login-button">
-        <el-button type="primary" native-type="submit" :loading="loading" @click="login">登录</el-button>
+        <el-button :loading="loading" native-type="submit" type="primary" @click="login">登录</el-button>
       </div>
-      <div class="login-info">如果没有册账号请点击<router-link :to="{name: 'register'}">注册</router-link></div>
+      <div class="login-info">如果没有册账号请点击
+        <router-link :to="{name: 'register'}">注册</router-link>
+      </div>
     </el-form>
   </div>
 </template>
@@ -81,35 +83,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .login-container {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    background: #2d3a4b;
-    .login-form {
-      position: relative;
-      width: 430px;
-      margin: 120px auto 0;
-      background: #fff;
-      padding: 20px 0;
-      padding-right: 30px;
-      border-radius: 15px;
-      .login-button{
-        display: flex;
-        justify-content: center;
-      }
-      .login-info {
-        text-align: right;
-        font-size: 0.9rem;
-        margin-top: 10px;
-        color: #909399;
-      }
-      .login-error {
-        color: #F56C6C;
-        text-align: center;
-        padding: 0 0 5px 5px;
-      }
+.login-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: #2d3a4b;
+
+  .login-form {
+    position: relative;
+    width: 430px;
+    margin: 120px auto 0;
+    background: #fff;
+    padding: 20px 0;
+    padding-right: 30px;
+    border-radius: 15px;
+
+    .login-button {
+      display: flex;
+      justify-content: center;
+    }
+
+    .login-info {
+      text-align: right;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      color: #909399;
+    }
+
+    .login-error {
+      color: #F56C6C;
+      text-align: center;
+      padding: 0 0 5px 5px;
     }
   }
+}
 </style>

@@ -1,7 +1,8 @@
 <template>
-  <base-box title="" type="primary" :headerBorder="false">
+  <base-box :headerBorder="false" title="" type="primary">
     <template v-slot:title-addon>
       <div
+        v-if="$store.state.isUserLogin"
         class="text-primary"
         style="margin-left: auto; cursor: pointer"
         @click="
@@ -10,14 +11,13 @@
             query: { id: $route.params.id }
           })
         "
-        v-if="$store.state.isUserLogin"
       >
         <i class="el-icon-edit"></i> 编辑曲谱
       </div>
     </template>
     <div class="score-item">
       <h2 style="text-align: center">{{ score.name }}</h2>
-      <img :src="score.poster" :alt="score.name" class="score-poster" />
+      <img :alt="score.name" :src="score.poster" class="score-poster"/>
       <ul class="score-meta">
         <li><label class="text-info">曲谱标题：</label> {{ score.title }}</li>
         <li><label class="text-info">演唱歌手：</label> {{ score.singer }}</li>
@@ -38,7 +38,7 @@
         <li>
           <label class="text-info">标签：</label>
           <span v-for="(type, index) in score.tags" :key="index"
-            >{{ type }};
+          >{{ type }};
           </span>
         </li>
         <li>
@@ -50,13 +50,14 @@
         <div class="rating-info">
           <p class="text-primary">你的评分</p>
           <el-button
-            native-type="submit"
             class="rating-button"
+            native-type="submit"
             @click="updateRating()"
-            >提交评分</el-button
+          >提交评分
+          </el-button
           >
         </div>
-        <el-rate :change="setRating(rating)" v-model="rating" show-score>
+        <el-rate v-model="rating" :change="setRating(rating)" show-score>
         </el-rate>
       </div>
 
@@ -64,16 +65,16 @@
         <img
           v-for="(pic, index) in score.spectrum"
           :key="index"
-          :src="pic"
           :alt="score.name"
+          :src="pic"
         />
       </div>
       <div class="pic-scroll">
         <el-slider
           id="scroll-slider"
           v-model="value"
-          vertical
           height="200px"
+          vertical
           @change="autoScroll(value)"
         >
         </el-slider>
@@ -124,9 +125,9 @@ export default {
         const response = await UserService.updateRating(
           this.$route.params.id,
           store.state.user.id,
-          { rating: this.rating }
+          {rating: this.rating}
         );
-        
+
         // 更新本地的user信息
         this.$store.dispatch("setUser", response.data.user);
       } catch (error) {
@@ -180,6 +181,7 @@ export default {
 <style lang="scss" scoped>
 .score-item {
   padding: 0 10px;
+
   .score-poster {
     display: block;
     height: 200px;
@@ -187,49 +189,60 @@ export default {
     border-radius: 3px;
     float: left;
   }
+
   .score-meta {
     list-style: none;
     margin-left: 340px;
     font-size: 14px;
+
     li {
       line-height: 1.4;
+
       label {
         width: 72px;
         display: inline-block;
       }
     }
   }
+
   .rating-model {
     text-align: center;
     margin-top: 30px;
     font-size: 20px;
     height: 100px;
+
     .rating-info {
       display: flex;
       justify-content: space-evenly;
       align-items: center;
+
       .rating-button {
         height: 40px;
         font-size: 20px;
         background-color: #409eff;
       }
     }
+
     ::v-deep .el-rate__icon {
       font-size: 30px;
     }
+
     ::v-deep .el-rate__text {
       font-size: 30px;
       color: #409eff !important;
     }
   }
+
   .spectrum-pic {
     margin-top: 30px;
+
     img {
       display: block;
       max-width: 1000px;
       height: auto;
     }
   }
+
   .pic-scroll {
     position: fixed;
     top: 300px;

@@ -1,21 +1,22 @@
 <template>
-  <base-box type="primary" title="曲谱搜索" :headerBorder= false>
+  <base-box :headerBorder=false title="曲谱搜索" type="primary">
     <template v-slot:title-addon>
       <div class="search-model">
-        <el-input class="search-info" placeholder="请输入搜索内容" v-model="info">
-          <el-button native-type="submit" class="search-button" @click="search(info)" slot="append" icon="el-icon-search"></el-button>
+        <el-input v-model="info" class="search-info" placeholder="请输入搜索内容">
+          <el-button slot="append" class="search-button" icon="el-icon-search" native-type="submit"
+                     @click="search(info)"></el-button>
         </el-input>
       </div>
     </template>
-    <div class="search-list" v-show="this.showResult">
+    <div v-show="this.showResult" class="search-list">
       <a
-        class="score-item"
-        @click="$router.push({name: 'score-detail', params: {id: score.id}})"
         v-for="score in scores"
-        :key="score.id">
-        <img :src="score.poster" :alt="score.name" />
-        <p><strong class="name">{{ score. name }} </strong>
-        <strong class="keys">{{ score.keys }}</strong></p>
+        :key="score.id"
+        class="score-item"
+        @click="$router.push({name: 'score-detail', params: {id: score.id}})">
+        <img :alt="score.name" :src="score.poster"/>
+        <p><strong class="name">{{ score.name }} </strong>
+          <strong class="keys">{{ score.keys }}</strong></p>
       </a>
     </div>
   </base-box>
@@ -24,6 +25,7 @@
 
 <script>
 import ScoreService from 'services/ScoreService'
+
 export default {
   data () {
     return {
@@ -56,14 +58,17 @@ export default {
   width: 500px;
   margin-top: 50px;
   margin-bottom: 50px;
-  .search-info{
-    border-right:none !important;
+
+  .search-info {
+    border-right: none !important;
   }
-  .search-button{
+
+  .search-button {
     border: none;
     background-color: white;
   }
 }
+
 .search-list {
   .score-item {
     display: block;
@@ -83,11 +88,14 @@ export default {
       width: 230px;
       border-radius: 3px;
     }
+
     p {
       text-align: center;
-      .name{
+
+      .name {
         font-size: 13px;
       }
+
       .keys {
         color: #e09015;
       }

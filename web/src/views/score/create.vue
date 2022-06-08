@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-box type="primary" title="新增信息">
+    <base-box title="新增信息" type="primary">
       <el-form ref="score-form" :model="form" :rules="rules" label-width="120px">
         <el-row>
           <el-col :span="12">
@@ -38,23 +38,24 @@
               <el-input v-model="form.rating" placeholder="请输入曲谱评分，默认为3"></el-input>
             </el-form-item>
           </el-col>
-           <el-col :span="12">
+          <el-col :span="12">
             <el-form-item label="曲谱浏览量" prop="views">
               <el-input v-model="form.views" placeholder="请输入曲谱浏览量"></el-input>
             </el-form-item>
           </el-col>
-           <el-col :span="24">
+          <el-col :span="24">
             <el-form-item label="曲谱图片" prop="spectrum">
-              <el-input v-model="form.spectrum" placeholder="请输入曲谱图片" type="textarea" :rows="3"></el-input>
+              <el-input v-model="form.spectrum" :rows="3" placeholder="请输入曲谱图片" type="textarea"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="曲谱简介" prop="description">
-              <el-input type="textarea" :rows="6" v-model="form.description" placeholder="请输入曲谱简介"></el-input>
+              <el-input v-model="form.description" :rows="6" placeholder="请输入曲谱简介" type="textarea"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24" style="text-align: center">
-            <el-button :loading="loading" type="primary" native-type="submit" @click.prevent="submit('score-form')">保存</el-button>
+            <el-button :loading="loading" native-type="submit" type="primary" @click.prevent="submit('score-form')">保存
+            </el-button>
             <el-button type="warning" @click="reset('score-form')">重置</el-button>
           </el-col>
         </el-row>
